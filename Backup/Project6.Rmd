@@ -1,0 +1,144 @@
+---
+output: html_document
+---
+# Explore & Summarize Data: For Baseball
+
+--------
+
+## Summary
+
+----------
+
+I decided for the Baseball data set including the basic data of 1157 baseball players. In the appendix you see further analysis of the data in R. I looked at the features, the distributions and correaltions to define a storyline. The two main additions/changes I made are:
+
+- Data cleaning - removed player with avg=0 and HR=0
+- we had player with the same name, to distugish them I added the initial for preferred hand to the name
+- introduce a new feature Body Mass Index (BMI - https://en.wikipedia.org/wiki/Body_mass_index), more infos under this link
+
+
+Storylines:
+
+- The is a high correlation between weight and height and the performance of a baseball player. Performance as measured in Home Runs and Batting average
+- In addition the handedness as an influnce too
+- I wanted to use a naimation to expalin the audience the impact of BMI and Handedness on perfromacne metric, by showing the distribution of the players as a scatterplot
+- in addition the audience can explore themselves by filtering the data nad find the best players and tehir indicators
+- decided for the scatterplot since I was mainly intrested in the dsitribution of the baseball players by certain metric
+
+## Design
+
+--------
+
+Attached my first d3.js charts to make the outlined story (see summarize) expalnatory.
+
+<b>Sketch 1:</b> Introduce a category feature to explore HR by average by BMI-Index
+![alt text](img/Sketch1.jpg)
+<end>
+
+<b>Sketch 2:</b> Look at handedness by HR and avaerage
+![alt text](img/Sketch2.jpg)
+<end>
+
+<b>Sketch 3:</b> Explore bubble chart, the size represents the sum of HR by category BMI, average. In addition the color represents handedness
+![alt text](img/Sketch3.jpg)
+<end>
+
+<b>Sketch 4:</b> Use scatterplot to show players by BMI on a grid of HR and average, use color to show handedness
+![alt text](img/Sketch4.jpg)
+<end>
+
+SKetch 4 was the winner and will be used to further enhance the story.
+
+Design choices:
+
+- log 2 basis for HR - why
+- change to Google colors and use opacity to show desnsity
+- remove gridlines and reduce to minmum
+- add animation and additiona chart to show HR distribution by BMI support expantory
+- change text for axis and legend
+- add filter options to provide eploartory capnbilities
+
+
+See different version as .html file (v1_xxxxxx.html - index.html)
+
+explain any design choices you made including changes to the visualization after collecting feedback
+
+## Feedback
+
+Interviewer 1 (Marvin)
+
+Interviewer 2 (Kirsta)
+
+Interviewer 3 (JF)
+
+
+
+--------
+
+include all feedback you received from others on your visualization from the first sketch to the final
+
+## Visualization
+
+Final visualization
+--------
+
+Resources - list any sources you consulted to create your visualization:
+
+- http://dimplejs.org/advanced_examples_viewer.html?id=advanced_storyboard_control
+- http://dimplejs.org/
+- http://d3js.org/
+- https://en.wikipedia.org/wiki/Body_mass_index
+- Book: "Interactive Data Visualization for the Web", O'Reilly
+
+## Appendix
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using
+# in your analysis in this code chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk.
+# This prevents the code from displaying in the knitted HTML output.
+# You should set echo=FALSE for all code chunks in your file.
+
+# set up working directory
+setwd("C:/Users/d023553/Documents/Business/SeminarsBooks/NanoDegree_DataSience/Lesson6/ProjectL6/Baseball")
+
+library(ggplot2)
+library(dplyr)
+library(GGally)
+library(gridExtra)
+```
+
+```{r echo=FALSE, Load_the_Data}
+# Load the Data
+rw <- read.csv("baseball_data.csv")
+```
+
+Based on the insights I tested 2 apporaves Boxplot and scatter plot (see sketches)
+
+
+--------
+
+### Analysing and understand the dataset
+```{r echo=TRUE, Analysis}
+str(rw)     #Compactly Display the Structure of an Arbitrary R Object
+summary(rw) #Object SUmmaries
+```
+
+Initial observations:
+
+
+To first explore this data visually, I'll use the ggpair function and apply it to the data-set "rw". This will give me quick insights on the 5 variables. The intention here is to see a quick distribution of the values.
+
+
+```{r echo=FALSE, Initial_Observations2}
+# included the jpg since the processing time is too long
+#ggpairs(rw, columns = 2:9, title="Quick insights on dataset Baseball")
+```
+
+ggpairs summary as jpeg:
+![alt text](img/Rplot.jpeg)
+<end>
+
+

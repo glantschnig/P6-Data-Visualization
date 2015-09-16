@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<script src="/lib/d3.v3.4.8.js"></script>
+	<script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
+	<style>
+
+		h2 {
+			text-align: center;
+
+	</style>
+
+	<script type="text/javascript">
+		function draw(data) {
+
+			/*
+			 D3.js setup code
+			 */
+			// code should be executed in "strict mode", e.g use undeclared variables
+			// "use strict";
+			var margin = 75, width = 1000 - margin, height = 700 - margin;
+			d3.select("body").append("h2").text("Baseball by R/L/B");
+
+			var svg = d3.select("body").append("svg").attr("width", width + margin).attr("height", height + margin).append("g").attr("class", "chart");
+
+			// Dimple.js Chart construction code
+			// Filter BMI
+			filterValues = dimple.getUniqueValues(data, "BMI").sort();
+			data = dimple.filterData(data, "BMI", ["21", "22", "23"]);
+			
+			var myChart = new dimple.chart(svg, data);
+			myAxis = myChart.addMeasureAxis("x", ["avg"]);
+			myAxis.overrideMin = 0.1;
+			myAxis.overrideMax = 0.32;
+			// myChart.addMeasureAxis("y", "HR");
+			myChart.addLogAxis("y", "HR", 2);
+			myChart.addSeries(["name", "BMI", "handedness"], dimple.plot.bubble);
+			myChart.addLegend(400, 10, 360, 20, "left");
+			myChart.draw();
+
+			svg.selectAll(".dimple-series-0").attr("opacity", "0.6").attr("r", 6);
+			// set google colors
+			svg.selectAll(".dimple-custom-format-1").attr("stroke", "#008744").attr("style", "fill: #008744");
+			svg.selectAll(".dimple-custom-format-2").attr("stroke", "#0057e7").attr("style", "fill: #0057e7");
+			svg.selectAll(".dimple-custom-format-3").attr("stroke", "#ffa700").attr("style", "fill: #ffa700");
+				
+		};
+
+		</script>
+</head>
+<body>
+	<script type="text/javascript">
+		/*
+		 Use D3 (not dimple.js) to load the TSV file
+		 and pass the contents of it to the draw function
+		 */
+		d3.csv("baseball_data.csv", draw);
+	</script>
+</body>
+</html>

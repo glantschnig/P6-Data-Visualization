@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <script src="/lib/d3.v3.4.8.js"></script>
+    <script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>    
+    <style>
+      circle.dimple-series-1 {
+        fill: red;
+      }
+
+      h2 {
+        text-align: center;
+      }
+    </style>
+
+    <script type="text/javascript">
+      function draw(data) {
+      
+      /*
+        D3.js setup code
+      */
+
+
+          var margin = 75,
+              width = 1600 - margin,
+              height = 800 - margin;
+//------
+          d3.select("body")
+            .append("h2")
+            .text("Baseball by BMI-C");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+   
+ //       Dimple.js Chart construction code
+   
+     
+
+          var myChart = new dimple.chart(svg, data);
+          myAxis = myChart.addCategoryAxis("x", ["avg-C", "avg"]);
+          myChart.addLogAxis("y", "HR", 2);
+//          myChart.addMeasureAxis("y", "HR");
+          myChart.addSeries(["name", "BMI-C"], dimple.plot.bubble);
+          myChart.addLegend(200, 10, 360, 20, "right");
+          myChart.draw();
+		  
+		  svg.selectAll(".dimple-series-0")
+		  	.attr("opacity", "0.6")
+		  	.attr("r", 5);
+		  	
+// -------
+          d3.select("body")
+            .append("h2")
+            .text("Baseball by R/L/B");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+
+//        Dimple.js Chart construction code
+
+     
+          var myChart = new dimple.chart(svg, data);
+          myAxis = myChart.addCategoryAxis("x", ["avg-C", "avg"]);
+//          myAxis.overrideMin = 0.1;
+//          myAxis.overrideMax = 0.32;
+//          myChart.addMeasureAxis("y", "HR");
+          myChart.addLogAxis("y", "HR", 2);
+          myChart.addSeries(["name", "handedness"], dimple.plot.bubble);
+          myChart.addLegend(200, 10, 360, 20, "right");
+          myChart.draw();
+
+		  svg.selectAll(".dimple-series-0")
+		  	.attr("opacity", "0.4")
+		  	.attr("r", 6);
+
+// -------
+          d3.select("body")
+            .append("h2")
+            .text("Baseball by R/L/B");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+
+//        Dimple.js Chart construction code
+
+     
+          var myChart = new dimple.chart(svg, data);
+          myAxis = myChart.addMeasureAxis("x", ["avg"]);
+          myAxis.overrideMin = 0.1;
+          myAxis.overrideMax = 0.32;
+          myChart.addMeasureAxis("y", "HR");
+          myChart.addSeries(["name", "handedness"], dimple.plot.bubble);
+          myChart.addLegend(200, 10, 360, 20, "right");
+          myChart.draw();
+
+		  svg.selectAll(".dimple-series-0")
+		  	.attr("opacity", "0.6")
+		  	.attr("r", 5);
+
+// -----
+          d3.select("body")
+            .append("h2")
+            .text("Baseball by BMI-C");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+
+//        Dimple.js Chart construction code
+
+     
+          var myChart = new dimple.chart(svg, data);
+          myChart.addMeasureAxis("x", "avg");
+          myChart.addMeasureAxis("y", "HR");
+          myChart.addSeries(["BMI"], dimple.plot.bubble);
+          myChart.addLegend(200, 10, 360, 20, "right");
+          myChart.draw();
+          
+// ------          
+          d3.select("body")
+            .append("h2")
+            .text("Baseball by R/L/B");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+
+//        Dimple.js Chart construction code
+
+     
+          var myChart = new dimple.chart(svg, data);
+          myChart.addMeasureAxis("x", "avg");
+          myChart.addMeasureAxis("y", "HR");
+          myChart.addSeries(["handedness"], dimple.plot.bubble);
+          myChart.addLegend(200, 10, 360, 20, "right");
+          myChart.draw();
+          
+// ------
+          d3.select("body")
+            .append("h2")
+            .text("Baseball ring-bubble");
+
+          var svg = d3.select("body")
+            .append("svg")
+              .attr("width", width + margin)
+              .attr("height", height + margin)
+            .append('g')
+                .attr('class','chart');
+
+ 
+//        Dimple.js Chart construction code
+
+        var myChart = new dimple.chart(svg, data);
+        myChart.addCategoryAxis("x", ["avg-C"]);
+        myChart.addCategoryAxis("y", "BMI-C");
+        myChart.addMeasureAxis("p", ["HR"]);
+        myChart.addMeasureAxis("z", ["HR"]);
+        var pie = myChart.addSeries(["BMI-C", "handedness"], dimple.plot.pie);
+        pie.radius = 150;
+        myChart.addLegend(200, 10, 360, 20, "right");
+        myChart.draw();
+
+        };
+
+    </script>
+  </head>
+<body>
+  <script type="text/javascript">
+  /*
+    Use D3 (not dimple.js) to load the TSV file
+    and pass the contents of it to the draw function
+    */
+  d3.csv("baseball_data.csv", draw);
+  </script>
+</body>
+</html>
