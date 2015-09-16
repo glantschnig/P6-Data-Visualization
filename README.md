@@ -30,15 +30,15 @@ Attached my first d3.js charts to make the outlined story (see summarize) explan
 <end>
 
 <b>Sketch 2:</b> Look at handedness by HR and average
-![alt text](img/Sketch2.jpg)
+![alt text](img/Sketch2.jpeg)
 <end>
 
 <b>Sketch 3:</b> Explore bubble chart, the size represents the sum of HR by category BMI, average. In addition the color represents handedness
-![alt text](img/Sketch3.jpg)
+![alt text](img/Sketch3.jpeg)
 <end>
 
 <b>Sketch 4:</b> Use scatterplot to show players by BMI on a grid of HR and average, use color to show handedness
-![alt text](img/Sketch4.jpg)
+![alt text](img/Sketch4.jpeg)
 <end>
 
 Sketch 4 was the winner and will be used to further enhance the story.
@@ -88,9 +88,9 @@ Resources - list any sources you consulted to create your visualization:
 
 ### Analyzing and understand the dataset
 Using R to get insights into the Baseball data set:
-![alt text](img/summary.jpg)
+![alt text](img/summary.jpeg)
 <end>
-![alt text](img/str.jpg)
+![alt text](img/str.jpeg)
 <end>
 Initial observations:
 
