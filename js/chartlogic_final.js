@@ -3,13 +3,16 @@
 var svg = dimple.newSvg("#chartContainer", 1180, 600);
 d3.csv("baseball_data.csv", function(data) {
 
+    // to ensure one iteration for the animation
     var selectedBMI = 1;
+    // set the BMI area for filtering
     var BMIArray = ["21", "22", "23", "24", "25", "26", "27", "28", "29", "30"];
 
     // Filter for BMI
     data = dimple.filterData(data, "BMI", BMIArray);
 
     // Create the indicator chart on the right of the main chart
+    // BMI to filter, length by HR
     var indicator = new dimple.chart(svg, data);
 
     // Pick blue as the default and orange for the selected month
@@ -17,7 +20,7 @@ d3.csv("baseball_data.csv", function(data) {
     var indicatorColor = indicator.defaultColors[2];
 
     // The frame duration for the animation in milliseconds
-    var frame = 1500;
+    var frame = 2000;
 
     var firstTick = true;
 
@@ -26,7 +29,6 @@ d3.csv("baseball_data.csv", function(data) {
     indicator.setBounds(900, 49, 153, 511);
 
     // Add dates along the y axis
-    // var y = indicator.addCategoryAxis("y", ["BMI", "handedness"]);
     var y = indicator.addCategoryAxis("y", ["BMI"]);
     y.addOrderRule("BMI", "Asc");
 
@@ -48,14 +50,19 @@ d3.csv("baseball_data.csv", function(data) {
     y.shapes.selectAll("line,path").remove();
 
     // Move the y axis text inside the plot area
-    y.shapes.selectAll("text").style("text-anchor", "start").style("font-size", "11px").attr("transform", "translate(18, 0.5)");
+    y.shapes.selectAll("text").style("text-anchor", "start")
+    	.style("font-size", "11px")
+    	.attr("transform", "translate(18, 0.5)");
 
-    // This block simply adds the legend title. I put it into a d3 data
-    // object to split it onto 2 lines.  This technique works with any
-    // number of lines, it isn't dimple specific.
-    svg.selectAll("title_text").data(["BMI distribution", "by Home Runs.", "Click to filter"]).enter().append("text").attr("x", 900).attr("y", function(d, i) {
+    // adds the legend title. I put it into a d3 data
+    svg.selectAll("title_text").data(["BMI distribution", "by Home Runs.", "Click on numbers to filter"])
+    	.enter().append("text").attr("x", 900).attr("y", function(d, i) {
         return 15 + i * 12;
-    }).style("font-family", "sans-serif").style("font-size", "10px").style("color", "Black").text(function(d) {
+    })
+    	.style("font-family", "sans-serif")
+    	.style("font-size", "10px")
+    	.style("color", "Black")
+    	.text(function(d) {
         return d;
     });
 
@@ -83,9 +90,11 @@ d3.csv("baseball_data.csv", function(data) {
     bubblesY.showGridlines = true;
     
     BaseballPlayer = bubbles.addSeries(["name", "BMI", "handedness"], dimple.plot.bubble);
+    // use afterdraw to manipulate the chart apperance
     BaseballPlayer.afterDraw = function(shape, data) {
         d3.select(shape).attr("r", "8");
 		bubblesY.shapes.selectAll("line,path").remove();
+        // add the log 2 scale numbers
         var i = 0;
         bubblesY.shapes.selectAll("text.dimple-custom-axis-label")[0].forEach(function(e){
             e.textContent = i;
@@ -100,8 +109,7 @@ d3.csv("baseball_data.csv", function(data) {
 
     // Draw the bubble chart
     bubbles.draw();
-	
-    bubbles.svg.selectAll("line").attr("stroke-dasharray", "10,10");
+	bubbles.svg.selectAll("line").attr("stroke-dasharray", "10,10");
     
     bubbles.legends = [];
 
@@ -111,9 +119,6 @@ d3.csv("baseball_data.csv", function(data) {
     }
 
     function activate(BMI) {
-        // BaseballPlayer.shapes.transition().duration(frame / 2).style("visibility", function(d){
-        //     return d.aggField[1] === BMI ? "visible" : "collapse";
-        // });
         BaseballPlayer.data = dimple.filterData(data, "BMI", [BMI]);
         bubbles.draw();
 
@@ -126,6 +131,6 @@ d3.csv("baseball_data.csv", function(data) {
     }
 
     activate(BMIArray[0]);
-
+	// run the animation	
     setInterval(function(){ if (selectedBMI < BMIArray.length) {activate(BMIArray[selectedBMI]); selectedBMI = selectedBMI + 1;} }, frame);
 });
