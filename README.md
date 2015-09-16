@@ -26,7 +26,7 @@ Story-lines:
 Attached my first d3.js charts to make the outlined story (see summarize) explanatory.
 
 <b>Sketch 1:</b> Introduce a category feature to explore HR by average by BMI-Index
-![alt text](img/Sketch1.jpg)
+![alt text](img/Sketch1.jpeg)
 <end>
 
 <b>Sketch 2:</b> Look at handedness by HR and average
