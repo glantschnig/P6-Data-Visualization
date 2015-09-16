@@ -45,17 +45,24 @@ Sketch 4 was the winner and will be used to further enhance the story.
 
 Design choices:
 
-- log 2 basis for HR - why
+- log 2 basis for HR and added scale numbers to legend since this is not supported in D3.js - why
 - change to Google colors and use opacity to show density
 - remove grid lines and reduce to minimum
 - add animation and additional chart to show HR distribution by BMI support explanatory
 - change text for axis and legend
 - add filter options to provide exploratory capabilities
+- change bubble size
+- .....
 
 
-See different version as .html file (v1_xxxxxx.html - index.html)
+See different version as to see the involvement of the explanatory story:
 
-explain any design choices you made including changes to the visualization after collecting feedback
+- Version 1:			v1_Baseball_MultipleCharts.html 
+- Version 2:			v2_Baseball_FinalChart.html
+- Version 3:			v3_Baseball_Animation.html 
+- Version 4:			v4_Baseball_Animation.html
+- **Final version:**		index.html
+
 
 ## Feedback
 
@@ -73,7 +80,9 @@ include all feedback you received from others on your visualization from the fir
 
 ## Visualization
 
-Final visualization
+Final visualization - attached a picture of the final vizuation. The grafik animates once through all BMI indicies and explains the changes in distribution of all baseball Players with the BMI category by HR, average and handedness.
+![alt text](img/final.jpeg)
+<end>
 --------
 
 Resources - list any sources you consulted to create your visualization:
