@@ -1,0 +1,86 @@
+text {
+  font-size: 0.75em;
+  stroke: none;
+}
+
+g.tick text {
+  font-size: 0.5em;
+  fill: grey;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+g.batting_average {
+  opacity: 0;
+}
+
+g.batting_average text {
+  font-weight: 300;
+}
+
+g.batting_average.left text {
+  text-anchor: start;
+}
+g.batting_average.right text {
+  text-anchor: end;
+}
+g.batting_average.both text {
+  text-anchor: middle;
+}
+
+g.right * {
+  fill: red;
+  stroke: red;
+}
+
+g.left * {
+  fill: green;
+  stroke: green;
+}
+
+g.both * {
+  fill: blue;
+  stroke: blue;
+}
+
+text.mean {
+  stroke: none;
+}
+
+path.area {
+  opacity: 0.5;
+}
+
+path.line {
+  fill: none;
+  opacity: 0.8;
+  stroke-width: 1.3px;
+}
+
+line.mean {
+  opacity: 1;
+  stroke-width: 1.6px;
+}
+
+#ranking {
+  opacity: 0;
+}
+
+#ranking g rect {
+  stroke: none;
+  opacity: 0.65;
+}
+
+#ranking g text.name{
+  fill: black;
+  stroke: none;
+}
+
+#ranking g text.avg{
+  fill: white;
+  stroke: none;
+}

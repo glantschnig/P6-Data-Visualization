@@ -1,0 +1,51 @@
+---
+output: html_document
+---
+# Explore & Summarize Data: For Baseball
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, packages}
+# Load all of the packages that you end up using
+# in your analysis in this code chunk.
+
+# Notice that the parameter "echo" was set to FALSE for this code chunk.
+# This prevents the code from displaying in the knitted HTML output.
+# You should set echo=FALSE for all code chunks in your file.
+
+# set up working directory
+setwd("C:/Users/d023553/Documents/Business/SeminarsBooks/NanoDegree_DataSience/Lesson6/ProjectL6/Baseball/P6-Data-Visualization")
+
+library(ggplot2)
+library(dplyr)
+library(GGally)
+library(gridExtra)
+```
+
+```{r echo=FALSE, Load_the_Data}
+# Load the Data
+rw <- read.csv("baseball_data.csv")
+```
+
+Based on the insights I tested 2 apporaves Boxplot and scatter plot (see sketches)
+
+
+--------
+
+### Analysing and understand the dataset
+```{r echo=TRUE, Analysis}
+str(rw)     #Compactly Display the Structure of an Arbitrary R Object
+summary(rw) #Object SUmmaries
+help (bxp)
+boxplot(count ~ names , data = avg)
+```
+
+Initial observations:
+
+
+To first explore this data visually, I'll use the ggpair function and apply it to the data-set "rw". This will give me quick insights on the 5 variables. The intention here is to see a quick distribution of the values.
+
+
+```{r echo=FALSE, Initial_Observations2}
+# included the jpg since the processing time is too long
+ggpairs(rw, columns = 2:6, title="Quick insights on dataset Baseball")
+```

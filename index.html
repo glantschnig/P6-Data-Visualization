@@ -1,9 +1,36 @@
 <!DOCTYPE html>
-<meta charset="utf-8">
 <html>
-	<div id="chartContainer">
-		<script src="/lib/d3.v3.4.8.js"></script>
-		<script src="http://dimplejs.org/dist/dimple.v2.1.6.min.js"></script>
-		<script type="text/javascript" src="js/chartlogic_final.js"></script>
-	</div>
+<head>
+  <meta charset="utf-8" />
+  <title>Baseball</title>
+  <link href="dependencies/c3/c3.min.css" rel="stylesheet" type="text/css">
+  <link rel="stylesheet" type="text/css" href="styles/main.css">
+  <link rel="stylesheet" type="text/css" href="styles/chart.css">
+</head>
+<body>
+  <div class="header">
+    <img class="logo" src="img/batter.png">
+    <div class="description">
+      <p>Batting average – determines the skills of players at batting</p>
+      <p>Can we prove the common wisdom that left handed players are better at batting – based on a data sample of 1157 players?</p>
+    </div>
+  </div>
+
+  <div class="descriptions">
+    <div class="hist">
+      <p class="mean right">Batting average right handed, Mean = <span></span></p>
+      <p class="mean both">Batting average both handed, Mean = <span></span></p>
+      <p class="mean left">Batting average left handed, Mean = <span></span></p>
+      <svg id="histogram"></svg>
+    </div>
+    <div class="ranking">
+      <p><b>6 of the top 10 players are left handed</b></p>
+      <svg id="ranking"></svg>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+  <script src="dependencies/c3/c3.min.js"></script>
+  <script type="text/javascript" src="js/main.js"></script>
+</body>
 </html>

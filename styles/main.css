@@ -1,0 +1,93 @@
+body {
+  width: 80%;
+  margin: auto;
+  margin-top: 1em;
+  font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+  font-weight: 300;
+}
+
+.header {
+  width: 100%;
+  margin: auto;
+  margin-bottom: 1em;
+  height: 110px;
+}
+
+.header .logo, .header .description {
+  display: inline-block;
+}
+
+.header .description {
+  font-size: 1.3em;
+  float: right;
+  vertical-align: middle;
+  width: calc(100% - 110px - 1em);
+}
+
+.header .description p {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.header .logo {
+  float: left;
+  width: 110px;
+}
+
+.descriptions div {
+  display: inline-block;
+  float: left;
+}
+
+.descriptions .hist {
+  width: 70%;
+}
+
+#histogram {
+  width: 100%;
+}
+
+.descriptions .ranking {
+  width: 30%;
+}
+
+p.right {
+  color: red
+}
+
+p.left {
+  color: green
+}
+
+p.both {
+  color: blue
+}
+
+svg#ranking {
+  clear: both;
+  width: 100%;
+}
+
+.ranking p {
+  width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.descriptions p {
+  margin-bottom: 2em;
+}
+
+.descriptions p.mean {
+  margin-left: 13.75%;
+  width: 15%;
+  display: inline-block;
+  text-align: center;
+}
+
+#histogram, #ranking {
+  display: inline-block;
+  float: left;
+  height: 350px;
+}
