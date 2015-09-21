@@ -111,7 +111,7 @@ These were the main design choices I made after getting feedback. It is worth me
 ## Visualization
 
 Final visualization - attached a picture of the final visualization. The graphic is animates and walks the reader through the story. The story should underline the key statement - "Are left handed baseball player better at batting?". The animation shows the mean for batting average by handedness (from low to high). The last chart underlines the message by showing that most of the top players in baseball are left handed.
-![alt text](img/final.jpeg)
+![alt text](img/final_v1.jpeg)
 <end>
 --------
 
