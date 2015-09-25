@@ -1,59 +1,137 @@
 var margin = {top: 20, right: 20, bottom: 40, left: 20};
 
+/*  
+showGraphic 
+    selector - a css selector, that specifies a svg or html node
+    
+changes the opacity of the given node to 1
+*/
 function showGraphic(selector) {
     d3.select(selector).transition().duration(500).style("opacity", 1);
 }
 
-var handedness = ['R', 'L', 'B'],
-    translateHandedness = {
+var translateHandedness = {
         "R": "right",
         "L": "left",
         "B": "both"
     };
 
+/*
+groupAvgsByHandedness
+    baseballData - json derived from baseball data csv
+    attribute - an attribute of the dataset records - such as "handedness"
+
+Example Output: JSON for "handedness"
+{
+    "R": datasetPart1,
+    "L": datasetPart2,
+    ...
+}
+*/
+function groupDatasetByAttribute(baseballData, attribute) {
+    var result = {}
+    for (var iterator in baseballData) {
+        dataRecord = baseballData[iterator];
+        if (dataRecord[attribute] in result) {
+            result[dataRecord[attribute]].push(dataRecord);
+        } else {
+            result[dataRecord[attribute]] = [dataRecord];
+        }
+    }
+    return result;
+}
+
+/*
+selectAttributeFromData
+    array - array of JSON Objects
+    atrribute - an attribute that every of the Objects in the array have
+
+Input:
+    array = [{a: 1, b:1}, {a:2, b:3}, {a:3, b:5}, ..]
+    atrribute = a
+
+Output:
+    [1, 2, 3]
+*/
+function selectAttributeFromData(array, attribute) {
+    return array.map(function(e){
+        return e[attribute];
+    });
+}
+
+/*
+selectAttributeFromGroupedData
+
+Input:
+    groupData = {
+        r: [{a:1, b:1}, {a:2, b:3}, {a:3, b:5}, ..],
+        l: [{a:1, b:1}, {a:2, b:3}, {a:3, b:5}, ..],
+        b: [..]
+    }
+    attribute = a
+
+Output:
+    {
+        r: [1, 2, 3],
+        l: [1, 2, 3],
+        ..
+    }
+*/
+function selectAttributeFromGroupedData(groupData, attribute) {
+    result = {}
+    for (var group in groupData) {
+        result[group] = selectAttributeFromData(groupData[group], attribute);
+    }
+    return result;
+}
+
+function ungroupData(groupData) {
+    result = [];
+    for (var group in groupData) {
+        result = result.concat(groupData[group]);
+    }
+    return result;
+}
+
 function histPlotHandedness(baseballData) {
     var width = document.getElementById("histogram").offsetWidth - margin.left - margin.right,
-        height = document.getElementById("histogram").offsetHeight - margin.top - margin.bottom;
-
-    var avgsPerHandedness = [];
-
-    for (var i = 0; i < handedness.length; i++) {
-        var avgs = baseballData.filter(function(e){
-            return e.handedness === handedness[i];
-        }).map(function(e) { return parseFloat(e.avg); });
-        avgsPerHandedness.push(avgs);
-    }
-
-    var binCount = 40;
+        height = document.getElementById("histogram").offsetHeight - margin.top - margin.bottom,
+        binCount = 40;
     
+    // helper: to map the real x values to the pixel x values in the svg
     var x = d3.scale.linear()
         //.domain([0.05, 0.35])
         .domain([0.1, 0.35])
         .range([0, width]);
 
-    // binning
+    // histograms show the distribution of values, the datasets contains continous average batting values
+    // thus, we need to categorize the average values into bins, d3 provides binning given an array of numbers
+    var avgsPerHandedness = groupDatasetByAttribute(baseballData, "handedness");
+        avgsPerHandedness = selectAttributeFromGroupedData(avgsPerHandedness, "avg");
+
+    // hist: function that counts occurences for each bin and returns a new data object
+    // loop it since we have one histogram for each handedness
     var hist = d3.layout.histogram().bins(x.ticks(binCount));
-    var data = [
-        hist(avgsPerHandedness[0]),
-        hist(avgsPerHandedness[1]),
-        hist(avgsPerHandedness[2])
-    ];
+    var histDataPerHandedness = {};
+    for (var handedness in avgsPerHandedness) {
+        histDataPerHandedness[handedness] = hist(avgsPerHandedness[handedness]);
+    }
 
     var y = d3.scale.linear()
-        // find largest occurence of one bin
-        .domain([0, d3.max(data, function(d) { return d3.max(d, function(e) { return e.y; }); })])
+        // find the maximum y-value of all the histograms and use this as upper level for domain
+        .domain([0, d3.max(selectAttributeFromData(ungroupData(histDataPerHandedness), 'y'))])
         .range([height, 0]);
 
-    var xAxis = d3.svg.axis()
-        .scale(x)
-        .orient("bottom");
-
+    // create the svg 
     var svg = d3.select("#histogram")
         .attr("width", width)
         .attr("height", height)
         .append("g")
         .attr("transform", "translate("+ margin.left +", 0)");
 
+    // the svg.area() and line() methods help to generate a continous surface
+    // the resulting functions (var area, var line) provide for every visible (rendered)
+    // x value the y value
     var area = d3.svg.area()
         .interpolate("basis")
         .x(function(d) { return x(d.x); })
@@ -66,20 +144,27 @@ function histPlotHandedness(baseballData) {
         .y(function(d) { return y(d.y); });
 
     // add graph for each hand
-    for (var i = 0; i < data.length; i++) {
-        var hand = translateHandedness[handedness[i]],
-            mean = d3.mean(avgsPerHandedness[i]);
+    var i = 0;
+    for (var handedness in histDataPerHandedness) {
+        var hand = translateHandedness[handedness],
+            data = histDataPerHandedness[handedness],
+            mean = d3.mean(avgsPerHandedness[handedness]);
             subGraphic = svg.append('g').attr("class", "batting_average " + hand);
 
         d3.select(".hist > .mean."+hand+" > span").text(mean.toFixed(3));
 
+        // add the histogram area 
+        // and a line to make it look better
         subGraphic.append("path")
             .attr("class", "area")
-            .attr("d", area(data[i]))
+            .attr("d", area(data))
         subGraphic.append("path")
             .attr("class", "line")
-            .attr("d", line(data[i]));
-        
+            .attr("d", line(data));
+
+        // add the vertical line indicating the mean
+        // unlike for line and area, we set the x and y positions ourselves
+        // the y2 depends on i in order to indent the text differently
         subGraphic.append("line")
             .attr("class", "mean")
             .attr("y1", 0)
@@ -90,9 +175,16 @@ function histPlotHandedness(baseballData) {
             .attr("class", "mean")
             .attr("y", height + 30 + i*14)
             .attr("x", x(mean))
-            .text("µ( " + hand + " ) = " + mean.toFixed(3));
+            .text("mean( " + hand + " ) = " + mean.toFixed(3));
+
+        i += 1;
     };
 
+    // helper: will generate an x axis for the x scale
+    var xAxis = d3.svg.axis()
+        .scale(x)
+        .orient("bottom");
+    
     svg.append("g")
         .attr("class", "x axis")
         .attr("transform", "translate(0," + height + ")")
@@ -103,6 +195,7 @@ function ranking (baseballData) {
     var width = document.getElementById("ranking").offsetWidth - margin.left - margin.right,
         height = document.getElementById("ranking").offsetHeight - margin.top - margin.bottom,
         barHeight = 30,
+        // nameWidth reserves the (x) space for the names - some kind of offset
         nameWidth = 100;
 
     var data = baseballData.sort(function(a, b){
